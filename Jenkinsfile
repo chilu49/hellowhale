@@ -4,17 +4,23 @@ node {
 			stage('Checkout') {
 			checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/chilu49/hellowhale.git']]])
 			}
+		
+		stage('cleanup') {
+				sh ''' docker stop testing-whaleapp'''
+				sh ''' docker rm testing-whaleapp '''
+				sh ''' docker images --no-trunc --format '{{.ID}} {{.CreatedSince}} {{.Repository}}' |grep whaleapp|awk '{print $1}'|xargs --no-run-if-empty docker rmi -f '''
+				}
  			stage('Build Image And Push') {
 			dir('/opt/jenkins/workspace/testing-asdfkljasdf/'){
-						sh ''' docker images --no-trunc --format '{{.ID}} {{.CreatedSince}} {{.Repository}}' |grep whaleapp|awk '{print $1}'|xargs --no-run-if-empty docker rmi -f '''
+						
  						def app = docker.build ("testing-whaleapp:${env.BUILD_ID}")
 						}
 					}
 			
     			stage ('Deploy-dev') {
 				//build job: 'account-service-pipeline', wait: false
-				sh ''' docker stop testing-whaleapp'''
-				sh ''' docker rm testing-whaleapp '''
+				//sh ''' docker stop testing-whaleapp'''
+				//sh ''' docker rm testing-whaleapp '''
 				sh ''' docker run -d  -it -p 8888:80 --name testing-whaleapp  testing-whaleapp:${BUILD_NUMBER}'''
 				   
        }    
