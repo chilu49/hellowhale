@@ -29,7 +29,7 @@ node {
        }    
         notify2('Successfully Deployed testing-whaleapp')  
 	notify4('Successfully Deployed testing-whaleapp') 
-	notifySlack("Success!", slackNotificationChannel, [])
+	notifySlack(currentBuild.result)
     }  catch (err) {
         notify1("Error {err}")
         currentBuild.result = 'FAILURE'
@@ -104,18 +104,25 @@ def getChangeString() {
 		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'good', message: "*${status}*", tokenCredentialId: 'jenkins-slack-integration-new'
 
 	}
-	def slackNotificationChannel = 'newcoebb-buildstatus'
-	def notifySlack(text, channel, attachments) {
-    		def slackURL = 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/'
-    		def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
+	def notifySlack(String buildStatus = 'STARTED') {
+    		// Build status of null means success.
+    		buildStatus = buildStatus ?: 'SUCCESS'
 
-    		def payload = JsonOutput.toJson([text: text,
-        		channel: channel,
-        		username: "Jenkins",
-        		icon_url: jenkinsIcon,
-        		attachments: attachments
-    			])
+    		def color
 
-    		sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
+    		if (buildStatus == 'STARTED') {
+        		color = '#D4DADF'
+    		} else if (buildStatus == 'SUCCESS') {
+        	color = '#BDFFC3'
+    		} else if (buildStatus == 'UNSTABLE') {
+        	color = '#FFFE89'
+    		} else {
+        	color = '#FF9FA1'
+    		}
+
+    		def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+
+    		//slackSend(color: color, message: msg)
+    		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'color', message: msg, tokenCredentialId: 'jenkins-slack-integration-new'
 		}
 	
