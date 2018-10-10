@@ -1,3 +1,6 @@
+#!/usr/bin/env groovy
+
+import groovy.json.JsonOutput
 node {
         notify1('Started testing-whaleapp build')
         try {
