@@ -26,6 +26,7 @@ node {
        }    
         notify2('Successfully Deployed testing-whaleapp')  
 	notify4('Successfully Deployed testing-whaleapp') 
+	notifySlack("Success!", slackNotificationChannel, [])
     }  catch (err) {
         notify1("Error {err}")
         currentBuild.result = 'FAILURE'
@@ -100,3 +101,18 @@ def getChangeString() {
 		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'good', message: "*${status}*", tokenCredentialId: 'jenkins-slack-integration-new'
 
 	}
+	def slackNotificationChannel = 'newcoebb-buildstatus'
+	def notifySlack(text, channel, attachments) {
+    		def slackURL = 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/'
+    		def jenkinsIcon = 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png'
+
+    		def payload = JsonOutput.toJson([text: text,
+        		channel: channel,
+        		username: "Jenkins",
+        		icon_url: jenkinsIcon,
+        		attachments: attachments
+    			])
+
+    		sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
+		}
+	
