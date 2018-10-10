@@ -90,6 +90,6 @@ def getChangeString() {
 			)
     } 
 	def notify4(status){
-		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'good', message: '${status}', tokenCredentialId: 'jenkins-slack-integration-new'
+		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'good', message: "${status}", tokenCredentialId: 'jenkins-slack-integration-new'
 
 	}
