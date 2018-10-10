@@ -6,6 +6,7 @@ node {
 			}
  			stage('Build Image And Push') {
 			dir('/opt/jenkins/workspace/testing-asdfkljasdf/'){
+						sh ''' docker images --no-trunc --format '{{.ID}} {{.CreatedSince}} {{.Repository}}' |grep whaleapp|awk '{print $1}'|xargs --no-run-if-empty docker rmi -f '''
  						def app = docker.build ("testing-whaleapp:${env.BUILD_ID}")
 						}
 					}
@@ -14,7 +15,6 @@ node {
 				//build job: 'account-service-pipeline', wait: false
 				sh ''' docker stop testing-whaleapp'''
 				sh ''' docker rm testing-whaleapp '''
-				sh ''' docker images --no-trunc --format '{{.ID}} {{.CreatedSince}} {{.Repository}}' |grep whaleapp|awk '{print $1}'|xargs --no-run-if-empty docker rmi -f '''
 				sh ''' docker run -d  -it -p 8888:80 --name testing-whaleapp  testing-whaleapp:${BUILD_NUMBER}'''
 				   
        }    
