@@ -18,7 +18,7 @@ node {
     
        }    
         notify2('Successfully Deployed testing-whaleapp')  
-	notify4	
+	notify4('Successfully Deployed testing-whaleapp') 
     }  catch (err) {
         notify1("Error {err}")
         currentBuild.result = 'FAILURE'
@@ -89,6 +89,6 @@ def getChangeString() {
 		body: "Changes:\n " + getChangeString() + "\n\n<br> Check console output at: $BUILD_URL/console" + "\n"
 			)
     } 
-	def notify4('SLack Notification'){
+	def notify4(status){
 		slackSend baseUrl: 'https://hooks.slack.com/services/', channel: 'newcoebb-buildstatus', color: 'good', message: 'welcome to slack testing', teamDomain: 'cabelasmobility', tokenCredentialId: 'jenkins-slack-integration-new'
 	}
