@@ -13,7 +13,7 @@ node {
     			stage ('Deploy-dev') {
 				//build job: 'account-service-pipeline', wait: false
 				sh ''' docker stop testing-whaleapp'''
-				sh ''' docker rm testing-whaleapp '''
+				//sh ''' docker rm testing-whaleapp '''
 				sh ''' docker run -d  --rm -it -p 8888:80 --name testing-whaleapp  testing-whaleapp:${BUILD_NUMBER}'''
     
        }    
