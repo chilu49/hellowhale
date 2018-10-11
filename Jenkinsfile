@@ -25,7 +25,7 @@ node {
 				//sh ''' docker stop testing-whaleapp'''
 				//sh ''' docker rm testing-whaleapp '''
 				sh ''' docker run -d  -it -p 8888:80 --name testing-whaleapp  testing-whaleapp:${BUILD_NUMBER}'''
-				sh '''sleep 10''' 
+				sh '''sleep 10''
 				   
        }    
         notify2('Successfully Deployed testing-whaleapp')  
