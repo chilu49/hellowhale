@@ -102,10 +102,7 @@ def getChangeString() {
 		body: "Changes:\n " + getChangeString() + "\n\n<br> Check console output at: $BUILD_URL/console" + "\n"
 			)
     } 
-	def notify4(status){
-		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'good', message: "*${status}*", tokenCredentialId: 'jenkins-slack-integration-new'
-
-	}
+	
 	def notifySlack(String buildStatus = 'STARTED') {
     		// Build status of null means success.
     		buildStatus = buildStatus ?: 'SUCCESS'
@@ -129,32 +126,5 @@ def getChangeString() {
 		}
 
 
-		def notifyBuild(String buildStatus = 'STARTED') {
-  // build status of null means successful
-  buildStatus =  buildStatus ?: 'SUCCESSFUL'
- 
-  // Default values
-  def colorName = 'RED'
-  def colorCode = '#FF0000'
-  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-  def summary = "${subject} (${env.BUILD_URL})"
-  def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-    <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>"""
- 
-  // Override default values based on build status
-  if (buildStatus == 'STARTED') {
-    color = 'YELLOW'
-    colorCode = '#FFFF00'
-  } else if (buildStatus == 'SUCCESSFUL') {
-    color = 'GREEN'
-    colorCode = '#00FF00'
-  } else {
-    color = 'RED'
-    colorCode = '#FF0000'
-  }
- 
-  // Send notifications
-  slackSend (color: colorCode, message: summary)
-  slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'color', message: summary, tokenCredentialId: 'jenkins-slack-integration-new'
-   }
+		
 	
