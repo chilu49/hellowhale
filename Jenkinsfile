@@ -29,12 +29,12 @@ node {
 				   
        }    
         notify2('Successfully Deployed testing-whaleapp')  
-	notify4('Successfully Deployed testing-whaleapp') 
 	notifySlack(currentBuild.result)
-	notifyBuild('STARTED')
+	
     }  catch (err) {
         notify1("Error {err}")
         currentBuild.result = 'FAILURE'
+	notifySlack(currentBuild.result)
     }
 }   
 @NonCPS
