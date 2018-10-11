@@ -119,7 +119,7 @@ def getChangeString() {
         	color = '#FF9FA1'
     		}
 
-    		def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+    		def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL} \n Please click on either proceed to deploy in test or abort to stop the build"
 
     		//slackSend(color: color, message: msg)
     		slackSend baseUrl: 'https://cabelasmobility.slack.com/services/hooks/jenkins-ci/', channel: 'newcoebb-buildstatus', color: 'color', message: msg, tokenCredentialId: 'jenkins-slack-integration-new'
