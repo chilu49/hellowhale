@@ -16,7 +16,12 @@ node {
  			stage('Build Image And Push') {
 			dir('/opt/jenkins/workspace/testing-asdfkljasdf/'){
 						
- 						def app = docker.build ("testing-whaleapp:${env.BUILD_ID}")
+ 						//def app = docker.build ("testing-whaleapp:${env.BUILD_ID}")
+						docker.withRegistry('https://shqhbrap65.cabelas.corp/harbor/projects/3/repositories', 'harbour-docker-registry-cred'){
+						def app = docker.build ("hellowhale-testing/hellowhale:${env.BUILD_ID}")
+						app.push()
+								}
+
 						}
 					}
 			
@@ -24,8 +29,10 @@ node {
 				//build job: 'account-service-pipeline', wait: false
 				//sh ''' docker stop testing-whaleapp'''
 				//sh ''' docker rm testing-whaleapp '''
-				sh ''' docker run -d  -it -p 8888:80 --name testing-whaleapp  testing-whaleapp:${BUILD_NUMBER}'''
+				sh ''' docker run -d  -it -p 8888:80 --name testing-whaleapp  testing-whaleap:${BUILD_NUMBER}'''
 				sh '''sleep 10'''
+				kubernetesDeploy configs: 'whaleapp-deployment.yaml', kubeConfig: [path: '/tmp/kube/k8s-jenkins-dev-serviceaccount-development-conf'], kubeconfigId: 'jenkins-dev-serviceaccount', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKRENDQWd5Z0F3SUJBZ0lVVm9WblRrOStiNDlCd1lnY2h4ZmJlTGNDdWQ0d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0RURUxNQWtHQTFVRUF4TUNZMkV3SGhjTk1UZ3dOakk0TVRjMU1qQTFXaGNOTVRrd05qSTRNVGMxTWpBMQpXakFOTVFzd0NRWURWUVFERXdKallUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCCkFLZHcyWU4xaGM2bTFXbHJuSnh3QzRxRWc0Wks4SHV6NWc4OUxqQTBTc0x2akhkeFdIOEsrNUlWS2lyTmtzancKUTkzd0dKV2gxUkhHdWtLQzkzVkQ0TFpIWHVOZEJ2eHZxam51S2pYS2h5RWJLVTdMcng5QzFzWmNGeTdRNzhrWgp0VUxWR3llTEoyY2wyZ2F3bGRGenZodVFSUkVKNkVxY25jbjVGY29sczhvTjZMYms4VFNrTzAwVzdoQlUzR0srCm0vU3BSUFhYVDBkVTFLRVJsMkQ3d1lnNU4yUTBvOXowSmVLZ0xpWWppUWRhdFM0M1RTdW1DQVpWaTB5Z0U1cFQKQTA2bXRnR0FsVlQyOWlxK3hqVk95YWFURWVoc2dUS3lSR1dteHpyWFdZUDUzWG80b0pxM2Nad0o3ZkZubUg1NQpuNGUrYUs2Y05pVWFOSnlrN0N4MGd6VUNBd0VBQWFOOE1Ib3dIUVlEVlIwT0JCWUVGSVQrOThOT01RQ216blFECjkyOWlxMzZ4bVdydk1FZ0dBMVVkSXdSQk1EK0FGSVQrOThOT01RQ216blFEOTI5aXEzNnhtV3J2b1JHa0R6QU4KTVFzd0NRWURWUVFERXdKallZSVVWb1ZuVGs5K2I0OUJ3WWdjaHhmYmVMY0N1ZDR3RHdZRFZSMFRBUUgvQkFVdwpBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQUJZZTN0SXFNeVA1NjdzT3R3N0ZTT0Ira1FhSjZIV3dSClowVFowQTJKQ0t0eVRpOTZIelZqWFo0d0RGZWNiWXlvNkFsZXpEdzMxZmJVOEtSNWFkczlYeUJJdXFyb1I0YUQKeFJCd0xRS0I4UjJPSTBQOHAwclFqR1dHTGhOQnVvdkVFYzB0eHduT2JvdDgxSWRxSUNwZStPNzRZQXNKQWpFRgpqSHhPLzgvUU1ueHNqUnBNME1SK0ZkcWd3K2dIN2lzZGFBd0lKbko4dzJEQmlpT1VtamxtVGVZdk40cFdCMHdtCmlLN0VrM1l1MElqVnZhK0E3VXFLTmhRRWYzcEwwanRoZ0hDcnJIUHB2aFFZS25CUWxBWlk1RmNndDZ3QTBzUW8KSE4rTEo3SkFSY0Z2TWtmODlSUWlqTkozS1lxK1FTT1luL0R5dXZHaUpvaStDajhTTUIrWFZRPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://Kubernetes-2.cabelas.corp:8443']
+
 				   
        }    
         notify2('Successfully Deployed testing-whaleapp')  
