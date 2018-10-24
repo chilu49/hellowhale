@@ -10,7 +10,7 @@ node {
 		
 		stage('cleanup') {
 				
-				
+				sh ''' docker stop testing-whaleapp && docker rm $_ '''
 				sh ''' docker images --no-trunc --format '{{.ID}} {{.CreatedSince}} {{.Repository}}' |grep whaleapp|awk '{print $1}'|xargs --no-run-if-empty docker rmi -f '''
 				}
  			stage('Build Image And Push') {
