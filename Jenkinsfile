@@ -2,7 +2,7 @@
 
 import groovy.json.JsonOutput
 node {
-	currentbuildnumber = "${BUILD_NUMBER}"
+	
         notify1('Started testing-whaleapp build')
         try {
 			stage('Checkout') {
@@ -32,8 +32,8 @@ node {
 				//sh ''' docker rm testing-whaleapp '''
 				sh ''' docker run -d  -it -p 8888:80 --name testing-whaleapp  hellowhale-testing/hellowhale:${BUILD_NUMBER}'''
 				sh '''sleep 10'''
-				
-				sh "sed 's/BUILDNUMBER/currentbuildnumber/g' whaleapp-deployment.yaml
+				currentbuildnumber = "${BUILD_NUMBER}"
+				sh "sed 's#BUILDNUMBER#'$currentbuildnumber'#' whaleapp-deployment.yaml
 				//kubernetesDeploy configs: 'whaleapp-deployment.yaml', kubeConfig: [path: 'k8s-jenkins-dev-serviceaccount-development-conf'], kubeconfigId: 'jenkins-dev-serviceaccount', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKRENDQWd5Z0F3SUJBZ0lVVm9WblRrOStiNDlCd1lnY2h4ZmJlTGNDdWQ0d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0RURUxNQWtHQTFVRUF4TUNZMkV3SGhjTk1UZ3dOakk0TVRjMU1qQTFXaGNOTVRrd05qSTRNVGMxTWpBMQpXakFOTVFzd0NRWURWUVFERXdKallUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCCkFLZHcyWU4xaGM2bTFXbHJuSnh3QzRxRWc0Wks4SHV6NWc4OUxqQTBTc0x2akhkeFdIOEsrNUlWS2lyTmtzancKUTkzd0dKV2gxUkhHdWtLQzkzVkQ0TFpIWHVOZEJ2eHZxam51S2pYS2h5RWJLVTdMcng5QzFzWmNGeTdRNzhrWgp0VUxWR3llTEoyY2wyZ2F3bGRGenZodVFSUkVKNkVxY25jbjVGY29sczhvTjZMYms4VFNrTzAwVzdoQlUzR0srCm0vU3BSUFhYVDBkVTFLRVJsMkQ3d1lnNU4yUTBvOXowSmVLZ0xpWWppUWRhdFM0M1RTdW1DQVpWaTB5Z0U1cFQKQTA2bXRnR0FsVlQyOWlxK3hqVk95YWFURWVoc2dUS3lSR1dteHpyWFdZUDUzWG80b0pxM2Nad0o3ZkZubUg1NQpuNGUrYUs2Y05pVWFOSnlrN0N4MGd6VUNBd0VBQWFOOE1Ib3dIUVlEVlIwT0JCWUVGSVQrOThOT01RQ216blFECjkyOWlxMzZ4bVdydk1FZ0dBMVVkSXdSQk1EK0FGSVQrOThOT01RQ216blFEOTI5aXEzNnhtV3J2b1JHa0R6QU4KTVFzd0NRWURWUVFERXdKallZSVVWb1ZuVGs5K2I0OUJ3WWdjaHhmYmVMY0N1ZDR3RHdZRFZSMFRBUUgvQkFVdwpBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQUJZZTN0SXFNeVA1NjdzT3R3N0ZTT0Ira1FhSjZIV3dSClowVFowQTJKQ0t0eVRpOTZIelZqWFo0d0RGZWNiWXlvNkFsZXpEdzMxZmJVOEtSNWFkczlYeUJJdXFyb1I0YUQKeFJCd0xRS0I4UjJPSTBQOHAwclFqR1dHTGhOQnVvdkVFYzB0eHduT2JvdDgxSWRxSUNwZStPNzRZQXNKQWpFRgpqSHhPLzgvUU1ueHNqUnBNME1SK0ZkcWd3K2dIN2lzZGFBd0lKbko4dzJEQmlpT1VtamxtVGVZdk40cFdCMHdtCmlLN0VrM1l1MElqVnZhK0E3VXFLTmhRRWYzcEwwanRoZ0hDcnJIUHB2aFFZS25CUWxBWlk1RmNndDZ3QTBzUW8KSE4rTEo3SkFSY0Z2TWtmODlSUWlqTkozS1lxK1FTT1luL0R5dXZHaUpvaStDajhTTUIrWFZRPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://Kubernetes-2.cabelas.corp:8443']
 				kubernetesDeploy configs: 'whaleapp-deployment.yaml', kubeConfig: [path: ''], kubeconfigId: 'ravi_kubeconfig', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
 				   
