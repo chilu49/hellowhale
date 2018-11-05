@@ -12,6 +12,6 @@ spec:
         spec:
             containers:
             - name: hellowhale
-              image: shqhbrap65.cabelas.corp/hellowhale-testing/hellowhale:$BUILDNUMBER
+              image: shqhbrap65.cabelas.corp/hellowhale-testing/hellowhale:BUILDNUMBER
               ports:
               - containerPort: 80
